@@ -70,6 +70,13 @@ public class HotelServiceImpl implements HotelService {
 	}
 	
 	@Override
+	public Set<Hotel> getHotels() throws Exception {
+		Set<Hotel> hotels=hotelDAO.getHotels();
+		if(hotels.isEmpty()) throw new Exception("Service.HOTEL_NOT_FOUND");
+		return hotels;
+	}
+	
+	@Override
 	public Set<Hotel> searchHotelByNameKey(String key) throws Exception {
 		Set<Hotel> hotels=hotelDAO.searchHotelByNameKey(key);
 		if(hotels.isEmpty()) throw new Exception("Service.HOTEL_NOT_FOUND");
