@@ -22,6 +22,8 @@ public interface HotelService {
 	
 	public String addVendorToHotel(String hotelId, String vendorId) throws Exception;
 	
+	public Set<Hotel> getHotels() throws Exception;
+	
 	public Set<Hotel> searchHotelByNameKey(String key) throws Exception;
 	
 	public Set<Hotel> searchHotelByLocationKey(String key) throws Exception;

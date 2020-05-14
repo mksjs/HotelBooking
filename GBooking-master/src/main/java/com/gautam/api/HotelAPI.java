@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import com.gautam.service.UserService;
 
 @RestController
 @RequestMapping(value="/")
+@CrossOrigin(origins="http://localhost:4200")
 public class HotelAPI {
 	
 	@Autowired
@@ -206,6 +208,17 @@ public class HotelAPI {
 			return response;
 		} catch(Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, environment.getProperty(e.getMessage()), e);
+		}
+	}
+	
+	@GetMapping(value="/hotel")
+	public ResponseEntity<Set<Hotel>> getHotels() throws Exception {
+		try {
+			Set<Hotel> hotels=hotelService.getHotels();
+			ResponseEntity<Set<Hotel>> response=new ResponseEntity<Set<Hotel>>(hotels, HttpStatus.OK);
+			return response;
+		} catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, environment.getProperty(e.getMessage()), e);
 		}
 	}
 	

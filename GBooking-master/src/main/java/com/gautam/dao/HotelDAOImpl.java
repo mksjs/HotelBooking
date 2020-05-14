@@ -146,6 +146,36 @@ public class HotelDAOImpl implements HotelDAO {
 	}
 	
 	@Override
+	public Set<Hotel> getHotels() throws Exception {
+		String queryString="SELECT h FROM HotelEntity h";
+		Query query=entityManager.createQuery(queryString);
+		List<HotelEntity> hotelEntities=query.getResultList();
+		Set<Hotel> hotels=new LinkedHashSet<Hotel>();
+		for(HotelEntity hotelEntity : hotelEntities) {
+			Hotel hotel=new Hotel();
+			hotel.setHotelId(hotelEntity.getHotelId());
+			hotel.setHotelName(hotelEntity.getHotelName());
+			hotel.setLocation(hotelEntity.getLocation());
+			hotel.setRoomCharge(hotelEntity.getRoomCharge());
+			hotel.setRoomsAvailable(hotelEntity.getRoomsAvailable());
+			hotel.setAmenities(hotelEntity.getAmenities());
+			hotel.setHotelStatus(hotelEntity.getHotelStatus());
+			Set<VendorEntity> vendorEntities=hotelEntity.getVendors();
+			Set<Vendor> vendors=new LinkedHashSet<Vendor>();
+			for(VendorEntity vendorEntity : vendorEntities) {
+				Vendor vendor=new Vendor();
+				vendor.setVendorId(vendorEntity.getVendorId());
+				vendor.setVendorName(vendorEntity.getVendorName());
+				vendor.setPromoCode(vendorEntity.getPromoCode());
+				vendors.add(vendor);
+			}
+			hotel.setVendors(vendors);
+			hotels.add(hotel);
+		}
+		return hotels;
+	}
+	
+	@Override
 	public Set<Hotel> searchHotelByNameKey(String key) throws Exception {     
 		String queryString="SELECT h FROM HotelEntity h WHERE h.hotelName LIKE :searchKey";
 		Query query=entityManager.createQuery(queryString);
